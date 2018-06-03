@@ -212,7 +212,7 @@ class ReplaceReferencesCapableTraitTest extends TestCase
             $tDefault,
         ];
 
-        $subject = $this->createInstance(['_normalizeString', '_quoteRegex', '_getAllMatchesRegex', '_containerGet']);
+        $subject = $this->createInstance(['_normalizeString', '_quoteRegex', '_getAllMatchesRegex', '_containerGet', '_normalizeTokenKey', '_stringableReplace']);
         $_subject = $this->reflect($subject);
 
         $subject->expects($this->exactly(2))
@@ -242,6 +242,15 @@ class ReplaceReferencesCapableTraitTest extends TestCase
                 // First group matches
                 $keys,
             ]));
+        // Key normalization can simply return the key, because here we expect them in the same format as they appear in the template.
+        $subject->expects($this->exactly(count($keys)))
+            ->method('_normalizeTokenKey')
+            ->withConsecutive(
+                [$keys[0]],
+                [$keys[1]],
+                [$keys[2]]
+            )
+            ->will($this->returnArgument(0));
         $subject->expects($this->exactly(count($keys)))
             ->method('_containerGet')
             ->withConsecutive(
