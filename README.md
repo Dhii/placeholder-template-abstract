@@ -12,7 +12,7 @@ Abstract functionality for working with templates that use placeholders.
 
 ### Traits
 - [`ReplaceTokensCapableTrait`] - Replaces tokens in a string with their corresponding values from a container,
-according to the token start and end.
+according to the token start and end. Allows normalization of token key into format used in container.
 - [`NormalizeTokenDelimiterCapableTrait`] - Normalizes token delimiters, like token start and end, making sure value type is correct.
 - [`TokenStartAwareTrait`] - Awareness of a token start delimiter.
 - [`TokenEndAwareTrait`] - Awareness of a token end delimiter.
