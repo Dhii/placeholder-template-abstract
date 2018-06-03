@@ -22,6 +22,8 @@ trait ReplaceTokensCapableTrait
     /**
      * Replaces all tokens in a string with corresponding values.
      *
+     * Use {@see _normalizeTokenKey()} to convert token keys into a format used in the container.
+     *
      * @since [*next-version*]
      *
      * @param string|Stringable                                 $input      The string that may contain tokens.
