@@ -215,10 +215,12 @@ class ReplaceReferencesCapableTraitTest extends TestCase
         $subject = $this->createInstance(['_normalizeString', '_quoteRegex', '_getAllMatchesRegex', '_containerGet', '_normalizeTokenKey', '_stringableReplace']);
         $_subject = $this->reflect($subject);
 
+        // We use strings here, so normalization just returns them
         $subject->expects($this->exactly(2))
             ->method('_normalizeString')
             ->withConsecutive([$input], [$vDefault])
             ->will($this->returnArgument(0));
+        // Manually quoting regex
         $subject->expects($this->exactly(2))
             ->method('_quoteRegex')
             ->withConsecutive([$tStart, $rxDelim], [$tEnd, $rxDelim])
@@ -226,6 +228,7 @@ class ReplaceReferencesCapableTraitTest extends TestCase
                 [$tStart, $rxDelim, preg_quote($tStart, $rxDelim)],
                 [$tEnd, $rxDelim, preg_quote($tEnd, $rxDelim)],
             ]);
+        // Manually producing token matches
         $subject->expects($this->exactly(1))
             ->method('_getAllMatchesRegex')
             ->with(
@@ -265,6 +268,7 @@ class ReplaceReferencesCapableTraitTest extends TestCase
 
                 return $source[$key];
             }));
+        // Each call will replace all occurrences of the token in the string with its corresponding value
         $subject->expects($this->exactly(count($keys)))
             ->method('_stringableReplace')
             ->withConsecutive(
@@ -277,6 +281,7 @@ class ReplaceReferencesCapableTraitTest extends TestCase
             }));
 
         $result = $_subject->_replaceTokens($input, $source, $tStart, $tEnd, $vDefault);
+        // Expect the same sentence, but with tokens replaced with their values
         $this->assertEquals(vsprintf($inputTemplate, [$source[$fox], $source[$dog], $vDefault]), $result, 'Wrong replacement result');
     }
 }
