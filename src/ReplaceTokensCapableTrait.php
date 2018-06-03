@@ -22,6 +22,8 @@ trait ReplaceTokensCapableTrait
     /**
      * Replaces all tokens in a string with corresponding values.
      *
+     * Use {@see _normalizeTokenKey()} to convert token keys into a format used in the container.
+     *
      * @since [*next-version*]
      *
      * @param string|Stringable                                 $input      The string that may contain tokens.
@@ -49,6 +51,8 @@ trait ReplaceTokensCapableTrait
 
         foreach ($matches[0] as $i => $token) {
             $key = $matches[1][$i];
+            $key = $this->_normalizeTokenKey($key);
+
             try {
                 $value = $this->_containerGet($source, $key);
             } catch (NotFoundExceptionInterface $e) {
@@ -66,6 +70,21 @@ trait ReplaceTokensCapableTrait
 
         return $input;
     }
+
+    /**
+     * Normalizes a key derived from a token.
+     *
+     * This is useful to convert a key from compatible formats into the format used in the container.
+     *
+     * @since [*next-version*]
+     *
+     * @param string|Stringable $key The key to normalize.
+     *
+     * @throws InvalidArgumentException If the key could not be normalized.
+     *
+     * @return string|Stringable The normalized key.
+     */
+    abstract protected function _normalizeTokenKey($key);
 
     /**
      * Retrieves a value from a container or data set.
