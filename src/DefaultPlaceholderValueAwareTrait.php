@@ -3,32 +3,52 @@
 namespace Dhii\Output;
 
 use Dhii\Util\String\StringableInterface as Stringable;
-use Exception as RootException;
 use InvalidArgumentException;
 
 /**
- * Functionality for token delimiter normalization.
+ * Functionality for awareness of a default placeholder value.
  *
  * @since [*next-version*]
  */
-trait NormalizeTokenDelimiterCapableTrait
+trait DefaultPlaceholderValueAwareTrait
 {
     /**
-     * Normalizes a token delimiter.
+     * The default placeholder value.
      *
      * @since [*next-version*]
      *
-     * @param Stringable|string|int|float|bool $delimiter The token delimiter to normalize.
-     *
-     * @throws InvalidArgumentException If the token delimiter could not be normalized.
-     *
-     * @return Stringable|string|int|float|bool The normalized token.
+     * @var Stringable|string|int|float|bool|null
      */
-    protected function _normalizeTokenDelimiter($delimiter)
-    {
-        $delimiter = $this->_normalizeStringable($delimiter);
+    protected $defaultPlaceholderValue;
 
-        return $delimiter;
+    /**
+     * Retrieves the default placeholder value associated with this instance.
+     *
+     * @since [*next-version*]
+     *
+     * @return Stringable|string|int|float|bool|null The default value.
+     */
+    protected function _getDefaultPlaceholderValue()
+    {
+        return $this->defaultPlaceholderValue;
+    }
+
+    /**
+     * Assigns a default placeholder value to this instance.
+     *
+     * @since [*next-version*]
+     *
+     * @param Stringable|string|int|float|bool $value The default value.
+     *
+     * @throws InvalidArgumentException If value is invalid.
+     */
+    protected function _setDefaultPlaceholderValue($value)
+    {
+        if (!is_null($value)) {
+            $value = $this->_normalizeStringable($value);
+        }
+
+        $this->defaultPlaceholderValue = $value;
     }
 
     /**
@@ -47,5 +67,5 @@ trait NormalizeTokenDelimiterCapableTrait
      * @return Stringable|string|int|float|bool The normalized stringable.
      *                                          If the original value was stringable, that same value will be returned without any modification.
      */
-    abstract protected function _normalizeStringable($stringable);
+    abstract public function _normalizeStringable($stringable);
 }

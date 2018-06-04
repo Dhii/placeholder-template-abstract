@@ -2,9 +2,7 @@
 
 namespace Dhii\Output\UnitTest;
 
-use Dhii\Output\NormalizeTokenDelimiterCapableTrait as TestSubject;
-use Dhii\Util\String\StringableInterface as Stringable;
-use stdClass;
+use Dhii\Output\DefaultPlaceholderValueAwareTrait as TestSubject;
 use Xpmock\TestCase;
 use Exception as RootException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -15,14 +13,14 @@ use PHPUnit_Framework_MockObject_MockBuilder as MockBuilder;
  *
  * @since [*next-version*]
  */
-class NormalizeTokenDelimiterCapableTraitTest extends TestCase
+class DefaultPlaceholderValueAwareTraitTest extends TestCase
 {
     /**
      * The class name of the test subject.
      *
      * @since [*next-version*]
      */
-    const TEST_SUBJECT_CLASSNAME = 'Dhii\Output\NormalizeTokenDelimiterCapableTrait';
+    const TEST_SUBJECT_CLASSNAME = 'Dhii\Output\DefaultPlaceholderValueAwareTrait';
 
     /**
      * Creates a new instance of the test subject.
@@ -143,46 +141,6 @@ class NormalizeTokenDelimiterCapableTraitTest extends TestCase
     }
 
     /**
-     * Creates a new Invalid Argument exception.
-     *
-     * @since [*next-version*]
-     *
-     * @param string $message The exception message.
-     *
-     * @return RootException|MockObject The new exception.
-     */
-    public function createInvalidArgumentException($message = '')
-    {
-        $mock = $this->getMockBuilder('InvalidArgumentException')
-            ->setConstructorArgs([$message])
-            ->getMock();
-
-        return $mock;
-    }
-
-    /**
-     * Creates a new Stringable.
-     *
-     * @since [*next-version*]
-     *
-     * @param array|null $methods The methods to mock, if any.
-     *
-     * @return MockObject|Stringable The new stringable.
-     */
-    public function createStringable($methods = [])
-    {
-        is_array($methods) && $methods = $this->mergeValues($methods, [
-            '__toString',
-        ]);
-
-        $mock = $this->getMockBuilder('Dhii\Util\String\StringableInterface')
-            ->setMethods($methods)
-            ->getMock();
-
-        return $mock;
-    }
-
-    /**
      * Tests whether a valid instance of the test subject can be created.
      *
      * @since [*next-version*]
@@ -199,43 +157,61 @@ class NormalizeTokenDelimiterCapableTraitTest extends TestCase
     }
 
     /**
-     * Tests whether `_normalizeTokenDelimiter()` works as expected.
+     * Tests whether `_setDefaultPlaceholderValue()` works as expected when given a non-null value.
      *
      * @since [*next-version*]
      */
-    public function testNormalizeTokenDelimiterSuccess()
+    public function testSetDefaultPlaceholderValueNotNull()
     {
-        $token = uniqid('token');
+        $value = uniqid('token');
         $subject = $this->createInstance(['_normalizeStringable']);
         $_subject = $this->reflect($subject);
 
         $subject->expects($this->exactly(1))
             ->method('_normalizeStringable')
-            ->with($token)
+            ->with($value)
             ->will($this->returnArgument(0));
 
-        $result = $_subject->_normalizeTokenDelimiter($token);
-        $this->assertEquals($token, $result, 'Token normalization produced wrong result');
+        $_subject->defaultPlaceholderValue = null;
+        $_subject->_setDefaultPlaceholderValue($value);
+        $this->assertEquals($value, $_subject->defaultPlaceholderValue, 'Placeholder value was not assigned correctly');
     }
 
     /**
-     * Tests whether `_normalizeTokenDelimiter()` fails as expected when given a non-stringable object.
+     * Tests whether `_setDefaultPlaceholderValue()` works as expected when given a non-null value.
      *
      * @since [*next-version*]
      */
-    public function testNormalizeTokenDelimiterFailure()
+    public function testSetDefaultPlaceholderValueNull()
     {
-        $token = new stdClass();
-        $exception = $this->createInvalidArgumentException('Invalid token');
+        $value = null;
         $subject = $this->createInstance(['_normalizeStringable']);
         $_subject = $this->reflect($subject);
 
-        $subject->expects($this->exactly(1))
-            ->method('_normalizeStringable')
-            ->with($token)
-            ->will($this->throwException($exception));
+        $subject->expects($this->exactly(0))
+            ->method('_normalizeStringable');
 
-        $this->setExpectedException('InvalidArgumentException');
-        $_subject->_normalizeTokenDelimiter($token);
+        $_subject->defaultPlaceholderValue = uniqid('token');
+        $_subject->_setDefaultPlaceholderValue($value);
+        $this->assertEquals($value, $_subject->defaultPlaceholderValue, 'Placeholder value was not assigned correctly');
+    }
+
+    /**
+     * Tests whether `_getDefaultPlaceholderValue()` works as expected.
+     *
+     * @since [*next-version*]
+     */
+    public function testGetDefaultPlaceholderValueNull()
+    {
+        $value = uniqid('value');
+        $subject = $this->createInstance(['_normalizeStringable']);
+        $_subject = $this->reflect($subject);
+
+        $subject->expects($this->exactly(0))
+            ->method('_normalizeStringable');
+
+        $_subject->defaultPlaceholderValue = $value;
+        $result = $_subject->_getDefaultPlaceholderValue();
+        $this->assertEquals($value, $result, 'Placeholder value was not retrieved correctly');
     }
 }
