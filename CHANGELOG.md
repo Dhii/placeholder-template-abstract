@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [[*next-version*]] - YYYY-MM-DD
+### Fixed
+- Corrected visibility of `_normalizeStringable()` from `public` to `protected`.
 
 ## [0.1-alpha4] - 2018-06-04
 ### Fixed
