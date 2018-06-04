@@ -26,7 +26,7 @@ trait PlaceholderTemplateAwareCapableTrait
      *
      * @since [*next-version*]
      *
-     * @param string|Stringable $template The template.
+     * @param string|Stringable|null $template The template.
      */
     protected function _setPlaceholderTemplate($template)
     {
