@@ -6,28 +6,49 @@ use Dhii\Util\String\StringableInterface as Stringable;
 use InvalidArgumentException;
 
 /**
- * Functionality for token delimiter normalization.
+ * Functionality for awareness of a placeholder template.
  *
  * @since [*next-version*]
  */
-trait NormalizeTokenDelimiterCapableTrait
+trait PlaceholderTemplateAwareCapableTrait
 {
     /**
-     * Normalizes a token delimiter.
+     * The placeholder template.
      *
      * @since [*next-version*]
      *
-     * @param Stringable|string|int|float|bool $delimiter The token delimiter to normalize.
-     *
-     * @throws InvalidArgumentException If the token delimiter could not be normalized.
-     *
-     * @return Stringable|string|int|float|bool The normalized token.
+     * @var string|Stringable|null
      */
-    protected function _normalizeTokenDelimiter($delimiter)
-    {
-        $delimiter = $this->_normalizeStringable($delimiter);
+    protected $placeholderTemplate;
 
-        return $delimiter;
+    /**
+     * Assigns the placeholder template to this instance.
+     *
+     * @since [*next-version*]
+     *
+     * @param string|Stringable $template The template.
+     */
+    protected function _setPlaceholderTemplate($template)
+    {
+        if (!is_null($template)) {
+            $template = $this->_normalizeStringable($template);
+        }
+
+        $this->placeholderTemplate = $template;
+    }
+
+    /**
+     * Retrieves the placeholder template associated with this instance.
+     *
+     * This template is something that can be converted to string, and may contain placeholders.
+     *
+     * @since [*next-version*]
+     *
+     * @return string|Stringable|null The placeholder template.
+     */
+    protected function _getPlaceholderTemplate()
+    {
+        return $this->placeholderTemplate;
     }
 
     /**
@@ -46,5 +67,5 @@ trait NormalizeTokenDelimiterCapableTrait
      * @return Stringable|string|int|float|bool The normalized stringable.
      *                                          If the original value was stringable, that same value will be returned without any modification.
      */
-    abstract protected function _normalizeStringable($stringable);
+    abstract public function _normalizeStringable($stringable);
 }

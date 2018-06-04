@@ -17,6 +17,7 @@ according to the token start and end. Allows normalization of token key into for
 - [`TokenStartAwareTrait`] - Awareness of a token start delimiter.
 - [`TokenEndAwareTrait`] - Awareness of a token end delimiter.
 - [`DefaultPlaceholderValueAwareTrait`] - Awareness of a default placeholder value.
+- [`PlaceholderTemplateAwareCapableTrait`] - Awareness of a placeholder template source.
 
 
 [Dhii]: https://github.com/Dhii/dhii
@@ -26,3 +27,4 @@ according to the token start and end. Allows normalization of token key into for
 [`TokenStartAwareTrait`]:                               src/TokenStartAwareTrait.php
 [`TokenEndAwareTrait`]:                                 src/TokenEndAwareTrait.php
 [`DefaultPlaceholderValueAwareTrait`]:                  src/DefaultPlaceholderValueAwareTrait.php
+[`PlaceholderTemplateAwareCapableTrait`]:               src/PlaceholderTemplateAwareCapableTrait.php
