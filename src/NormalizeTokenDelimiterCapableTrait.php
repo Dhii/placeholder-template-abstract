@@ -18,51 +18,34 @@ trait NormalizeTokenDelimiterCapableTrait
      *
      * @since [*next-version*]
      *
-     * @param string|Stringable $delimiter The token delimiter to normalize.
+     * @param Stringable|string|int|float|bool $delimiter The token delimiter to normalize.
      *
      * @throws InvalidArgumentException If the token delimiter could not be normalized.
      *
-     * @return string|Stringable The normalized token.
+     * @return Stringable|string|int|float|bool The normalized token.
      */
     protected function _normalizeTokenDelimiter($delimiter)
     {
-        if (!($delimiter instanceof Stringable) && !is_string($delimiter)) {
-            throw $this->_createInvalidArgumentException($this->__('Invalid token delimiter'), null, null, $delimiter);
-        }
+        $delimiter = $this->_normalizeStringable($delimiter);
 
         return $delimiter;
     }
 
     /**
-     * Creates a new Invalid Argument exception.
+     * Normalizes a stringable value.
+     *
+     * Useful to make sure that a value can be converted to string in a meaningful way.
      *
      * @since [*next-version*]
      *
-     * @param string|Stringable|int|float|bool|null $message  The message, if any.
-     * @param int|float|string|Stringable|null      $code     The numeric error code, if any.
-     * @param RootException|null                    $previous The inner exception, if any.
-     * @param mixed|null                            $argument The invalid argument, if any.
+     * @param Stringable|string|int|float|bool $stringable The value to normalize.
+     *                                                     Can be an object that implements {@see Stringable}, or scalar type -
+     *                                                     basically anything that can be converted to a string in a meaningful way.
      *
-     * @return InvalidArgumentException The new exception.
+     * @throws InvalidArgumentException If the value could not be normalized.
+     *
+     * @return Stringable|string|int|float|bool The normalized stringable.
+     *                                          If the original value was stringable, that same value will be returned without any modification.
      */
-    abstract protected function _createInvalidArgumentException(
-        $message = null,
-        $code = null,
-        RootException $previous = null,
-        $argument = null
-    );
-
-    /**
-     * Translates a string, and replaces placeholders.
-     *
-     * @since [*next-version*]
-     * @see sprintf()
-     *
-     * @param string $string  The format string to translate.
-     * @param array  $args    Placeholder values to replace in the string.
-     * @param mixed  $context The context for translation.
-     *
-     * @return string The translated string.
-     */
-    abstract protected function __($string, $args = [], $context = null);
+    abstract protected function _normalizeStringable($stringable);
 }

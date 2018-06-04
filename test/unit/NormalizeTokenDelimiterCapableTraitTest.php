@@ -203,34 +203,19 @@ class NormalizeTokenDelimiterCapableTraitTest extends TestCase
      *
      * @since [*next-version*]
      */
-    public function testNormalizeTokenDelimiterSuccessString()
+    public function testNormalizeTokenDelimiterSuccess()
     {
         $token = uniqid('token');
-        $subject = $this->createInstance();
+        $subject = $this->createInstance(['_normalizeStringable']);
         $_subject = $this->reflect($subject);
 
-        $result = $_subject->_normalizeTokenDelimiter($token);
-        $this->assertEquals($token, $result, 'String token normalization produced wrong result');
-    }
-
-    /**
-     * Tests whether `_normalizeTokenDelimiter()` works as expected.
-     *
-     * @since [*next-version*]
-     */
-    public function testNormalizeTokenDelimiterSuccessStringable()
-    {
-        $value = uniqid('token');
-        $token = $this->createStringable(['__toString']);
-        $subject = $this->createInstance();
-        $_subject = $this->reflect($subject);
-
-        $token->expects($this->any())
-            ->method('__toString')
-            ->will($this->returnValue($value));
+        $subject->expects($this->exactly(1))
+            ->method('_normalizeStringable')
+            ->with($token)
+            ->will($this->returnArgument(0));
 
         $result = $_subject->_normalizeTokenDelimiter($token);
-        $this->assertEquals($value, (string) $result, 'Stringable token normalization produced wrong result');
+        $this->assertEquals($token, $result, 'Token normalization produced wrong result');
     }
 
     /**
@@ -238,24 +223,19 @@ class NormalizeTokenDelimiterCapableTraitTest extends TestCase
      *
      * @since [*next-version*]
      */
-    public function testNormalizeTokenDelimiterFailureObject()
+    public function testNormalizeTokenDelimiterFailure()
     {
         $token = new stdClass();
         $exception = $this->createInvalidArgumentException('Invalid token');
-        $subject = $this->createInstance();
+        $subject = $this->createInstance(['_normalizeStringable']);
         $_subject = $this->reflect($subject);
 
         $subject->expects($this->exactly(1))
-            ->method('_createInvalidArgumentException')
-            ->with(
-                $this->isType('string'),
-                $this->anything(),
-                $this->anything(),
-                $token
-            )
-            ->will($this->returnValue($exception));
+            ->method('_normalizeStringable')
+            ->with($token)
+            ->will($this->throwException($exception));
 
         $this->setExpectedException('InvalidArgumentException');
-        $result = $_subject->_normalizeTokenDelimiter($token);
+        $_subject->_normalizeTokenDelimiter($token);
     }
 }

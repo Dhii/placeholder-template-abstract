@@ -15,7 +15,7 @@ trait TokenStartAwareTrait
     /**
      * @since [*next-version*]
      *
-     * @var string|Stringable|null
+     * @var Stringable|string|int|float|bool|null
      */
     protected $tokenStart;
 
@@ -24,7 +24,7 @@ trait TokenStartAwareTrait
      *
      * @since [*next-version*]
      *
-     * @return string|Stringable|null The delimiter.
+     * @return Stringable|string|int|float|bool|null The delimiter.
      */
     protected function _getTokenStart()
     {
@@ -36,7 +36,7 @@ trait TokenStartAwareTrait
      *
      * @since [*next-version*]
      *
-     * @param string|Stringable|null $delimiter The delimiter that marks the start of a token.
+     * @param Stringable|string|int|float|bool|null $delimiter The delimiter that marks the start of a token.
      *
      * @throws InvalidArgumentException If the delimiter is invalid.
      */
@@ -54,11 +54,11 @@ trait TokenStartAwareTrait
      *
      * @since [*next-version*]
      *
-     * @param string|Stringable $delimiter The token delimiter to normalize.
+     * @param Stringable|string|int|float|bool $delimiter The token delimiter to normalize.
      *
      * @throws InvalidArgumentException If the token delimiter could not be normalized.
      *
-     * @return string|Stringable The normalized token.
+     * @return Stringable|string|int|float|bool The normalized token.
      */
     abstract protected function _normalizeTokenDelimiter($delimiter);
 }
