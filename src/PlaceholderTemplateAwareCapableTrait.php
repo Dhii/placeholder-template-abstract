@@ -17,7 +17,7 @@ trait PlaceholderTemplateAwareCapableTrait
      *
      * @since [*next-version*]
      *
-     * @var string|Stringable|null
+     * @var Stringable|string|int|float|bool|null
      */
     protected $placeholderTemplate;
 
@@ -26,7 +26,7 @@ trait PlaceholderTemplateAwareCapableTrait
      *
      * @since [*next-version*]
      *
-     * @param string|Stringable|null $template The template.
+     * @param Stringable|string|int|float|bool|null $template The template.
      */
     protected function _setPlaceholderTemplate($template)
     {
@@ -44,7 +44,7 @@ trait PlaceholderTemplateAwareCapableTrait
      *
      * @since [*next-version*]
      *
-     * @return string|Stringable|null The placeholder template.
+     * @return Stringable|string|int|float|bool|null The placeholder template.
      */
     protected function _getPlaceholderTemplate()
     {
