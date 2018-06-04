@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [[*next-version*]] - YYYY-MM-DD
 
+## [0.1-alpha5] - 2018-06-04
+### Fixed
+- Corrected visibility of `_normalizeStringable()` from `public` to `protected`.
+
 ## [0.1-alpha4] - 2018-06-04
 ### Fixed
 - Param type doc for `PlaceholderTemplateAwareCapableTrait#_setPlaceholderTemplate()`.
